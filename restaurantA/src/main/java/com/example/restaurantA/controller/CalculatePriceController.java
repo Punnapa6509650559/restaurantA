@@ -1,26 +1,22 @@
 package com.example.restaurantA.controller;
 
+import com.example.restaurantA.service.CalculatePriceService;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.restaurantA.service.CalculatePriceService;
 
 @RestController
 public class CalculatePriceController {
 
-    private final CalculatePriceService calculatePriceService;
+    private final CalculatePriceService service;
 
-    public CalculatePriceController(CalculatePriceService calculatePriceService) {
-        this.calculatePriceService = calculatePriceService;
+    public CalculatePriceController(CalculatePriceService service) {
+        this.service = service;
     }
 
     @PostMapping("/calculate-price")
-    public Map<String, Object> calculatePrice(@RequestBody Map<String, List<String>> request) {
-        List<String> dishes = request.get("dishes");
-        return calculatePriceService.calculatePrice(dishes);
+    public Map<String, Object> calculate(@RequestBody Map<String, List<String>> body) {
+        return service.calculatePrice(body.get("dishes"));
     }
 }

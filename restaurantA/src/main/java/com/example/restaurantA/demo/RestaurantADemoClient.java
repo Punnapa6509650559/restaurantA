@@ -9,18 +9,14 @@ public class RestaurantADemoClient {
 
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
-        String baseUrl = "http://192.168.1.52:8081"; 
+        String baseUrl = "http://localhost:8081";
 
-        String tablesUrl = baseUrl + "/api/available-tables";
-        Map<String, Object> tables = restTemplate.getForObject(tablesUrl, Map.class);
-        System.out.println("ผลลัพธ์จาก B (/available-tables): " + tables);
+        Map<String, Object> tables = restTemplate.getForObject(baseUrl + "/api/available-tables", Map.class);
+        System.out.println("โต๊ะว่างจาก B: " + tables);
 
-
-        String waitTimeUrl = baseUrl + "/api/estimate-wait-time";
         Map<String, Integer> request = new HashMap<>();
         request.put("dishes", 3);
-
-        Map<String, Object> waitTime = restTemplate.postForObject(waitTimeUrl, request, Map.class);
-        System.out.println("ผลลัพธ์จาก B (/estimate-wait-time): " + waitTime);
+        Map<String, Object> waitTime = restTemplate.postForObject(baseUrl + "/api/estimate-wait-time", request, Map.class);
+        System.out.println("เวลารอจาก B: " + waitTime);
     }
 }
