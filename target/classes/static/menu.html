@@ -2,43 +2,154 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Restaurant A Menu</title>
+    <title>Restaurant A - Menu & Order</title>
+    <link href="https://fonts.googleapis.com/css2?family=TH+Sarabun+New&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'TH Sarabun New', sans-serif;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            color: #333;
+        }
+        h1, h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            font-size: 20px;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        input[type="number"] {
+            width: 60px;
+        }
+        button {
+            padding: 6px 12px;
+            font-family: 'TH Sarabun New', sans-serif;
+            font-size: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #total-price {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Menu - Restaurant A</h1>
+    <h1>Restaurant A</h1>
 
-    <form id="order-form">
-        <ul id="menu-list"></ul>
-        <button type="submit">Calculate Total</button>
-    </form>
+    <section>
+        <h2>Step 1: View Menu </h2>
+        <button onclick="loadMenu()">Load Menu</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Price (THB)</th>
+                </tr>
+            </thead>
+            <tbody id="view-menu-body">
+                <!-- menu display only -->
+            </tbody>
+        </table>
+    </section>
 
-    <h2 id="total-price"></h2>
+   
+    <section>
+        <h2>Step 2: Order and Calculate Price </h2>
+        <form id="order-form">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dish</th>
+                        <th>Price (THB)</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="order-menu-body">
+                    <!-- menu + quantity input -->
+                </tbody>
+            </table>
+            <button type="submit">Calculate Total</button>
+        </form>
+        <div id="total-price"></div>
+    </section>
 
     <script>
-        fetch("/menu")
-            .then(res => res.json())
-            .then(data => {
-                const ul = document.getElementById("menu-list");
-                data.forEach(item => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `<label><input type="checkbox" value="${item.name}"> ${item.name} (${item.price} THB)</label>`;
-                    ul.appendChild(li);
-                });
-            });
+        let menuItems = [];
 
-        document.getElementById("order-form").addEventListener("submit", function(e) {
+        function loadMenu() {
+            fetch("/menu")
+                .then(res => res.json())
+                .then(data => {
+                    menuItems = data;
+                    renderViewOnlyMenu(data);
+                    renderOrderMenu(data);
+                });
+        }
+
+        function renderViewOnlyMenu(menu) {
+            const tbody = document.getElementById("view-menu-body");
+            tbody.innerHTML = "";
+            menu.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderOrderMenu(menu) {
+            const tbody = document.getElementById("order-menu-body");
+            tbody.innerHTML = "";
+            menu.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td><input type="number" name="${item.name}" min="0" value="0"></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById("order-form").addEventListener("submit", function (e) {
             e.preventDefault();
-            const selected = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
-                                  .map(cb => cb.value);
+            const inputs = document.querySelectorAll('#order-menu-body input[type="number"]');
+            const order = [];
+
+            inputs.forEach(input => {
+                const quantity = parseInt(input.value);
+                if (quantity > 0) {
+                    order.push({ name: input.name, quantity });
+                }
+            });
 
             fetch("/calculate-price", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ dishes: selected })
+                body: JSON.stringify({ order })
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("total-price").innerText = "Total Price: " + data.totalPrice + " THB";
+                document.getElementById("total-price").innerText = 
+                    "Total Price: " + data.totalPrice + " THB";
             });
         });
     </script>
