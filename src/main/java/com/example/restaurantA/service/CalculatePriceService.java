@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @Service
 public class CalculatePriceService {
 
-    // สมมติเมนู fix ไว้เหมือนใน MenuService
     private final List<MenuItem> menu = List.of(
             new MenuItem("กะเพราหมูสับไข่ดาว", 45),
             new MenuItem("หมูกรอบคั่วพริกเกลือ", 50),
@@ -20,11 +19,10 @@ public class CalculatePriceService {
     );
 
     public int calculateTotalPrice(List<OrderItem> order) {
-        // แปลงเมนูเป็น Map สำหรับค้นหาราคา
+   
         Map<String, Integer> priceMap = menu.stream()
                 .collect(Collectors.toMap(MenuItem::getName, MenuItem::getPrice));
 
-        // รวมราคาทั้งหมดตามจำนวนจาน
         return order.stream()
                 .mapToInt(item -> priceMap.getOrDefault(item.getName(), 0) * item.getQuantity())
                 .sum();

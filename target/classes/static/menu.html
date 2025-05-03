@@ -68,7 +68,6 @@
         </table>
     </section>
 
-   
     <section>
         <h2>Step 2: Order and Calculate Price </h2>
         <form id="order-form">
@@ -144,11 +143,11 @@
             fetch("/calculate-price", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ order })
+                body: JSON.stringify(order) 
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("total-price").innerText = 
+                document.getElementById("total-price").innerText =
                     "Total Price: " + data.totalPrice + " THB";
             });
         });
