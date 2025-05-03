@@ -1,6 +1,7 @@
 package com.example.restaurantA.model;
 
 public class OrderItem {
+
     private String name;
     private int quantity;
 
@@ -11,21 +12,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public int getQuantity() { return quantity; }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 }
-
-

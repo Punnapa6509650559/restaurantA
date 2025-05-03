@@ -1,10 +1,11 @@
 com/example/restaurantA/service/CalculatePriceService.class
 com/example/restaurantA/demo/RestaurantADemoClient.class
+com/example/restaurantA/repository/MenuItemRepository.class
+com/example/restaurantA/service/MenuService.class
+com/example/restaurantA/controller/MenuController.class
 com/example/restaurantA/controller/CallBController.class
 com/example/restaurantA/controller/CalculatePriceController.class
-com/example/restaurantA/service/MenuService.class
 com/example/restaurantA/client/BClient.class
 com/example/restaurantA/model/OrderItem.class
 com/example/restaurantA/RestaurantAApplication.class
-com/example/restaurantA/controller/MenuController.class
 com/example/restaurantA/model/MenuItem.class

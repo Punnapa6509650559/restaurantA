@@ -1,30 +1,34 @@
 package com.example.restaurantA.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "menu_item")
 public class MenuItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
     private int price;
 
-    public MenuItem() {
-    }
+    public MenuItem() {}
 
     public MenuItem(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
 
-    public int getPrice() {
-        return price;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+    public void setName(String name) { this.name = name; }
+
+    public int getPrice() { return price; }
+
+    public void setPrice(int price) { this.price = price; }
 }

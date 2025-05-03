@@ -2,6 +2,7 @@
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/controller/CallBController.java
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/model/OrderItem.java
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/client/BClient.java
+/Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/repository/MenuItemRepository.java
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/RestaurantAApplication.java
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/controller/MenuController.java
 /Users/punnapa/Downloads/restaurantA/src/main/java/com/example/restaurantA/controller/CalculatePriceController.java

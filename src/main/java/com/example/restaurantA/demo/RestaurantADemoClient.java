@@ -1,26 +1,35 @@
 package com.example.restaurantA.demo;
 
+import com.example.restaurantA.model.OrderItem;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 public class RestaurantADemoClient {
-
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
-        String baseUrl = "http://localhost:8081";
 
-        System.out.println("[A → B] Checking available tables...");
+        // Call B: Check available tables
+        String bUrl = "http://localhost:8081/available-tables";
+        Integer tables = restTemplate.getForObject(bUrl, Integer.class);
+        System.out.println("[B] Available tables: " + tables);
 
-        Map<String, Object> tables = restTemplate.getForObject(baseUrl + "/api/available-tables", Map.class);
-        System.out.println("Available tables from B: " + tables.get("availableTables"));
+        // Call B: Estimate wait time
+        String waitUrl = "http://localhost:8081/estimate-wait-time";
 
-        System.out.println("\n[A → B] Estimating wait time for 3 dishes...");
+        List<OrderItem> order = List.of(
+                new OrderItem("ข้าวผัด", 2),
+                new OrderItem("ไก่ย่าง", 1)
+        );
 
-        Map<String, Integer> request = new HashMap<>();
-        request.put("dishes", 3);
-        Map<String, Object> waitTime = restTemplate.postForObject(baseUrl + "/api/estimate-wait-time", request, Map.class);
-        System.out.println("Estimated wait time from B: " + waitTime.get("waitTime") + " minutes");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<OrderItem>> request = new HttpEntity<>(order, headers);
+
+        Integer waitTime = restTemplate.postForObject(waitUrl, request, Integer.class);
+        System.out.println("[B] Estimated wait time: " + waitTime + " minutes");
     }
 }
